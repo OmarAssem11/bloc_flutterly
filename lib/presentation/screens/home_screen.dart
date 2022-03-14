@@ -80,6 +80,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 24),
+              Builder(
+                builder: (context) {
+                  final counterState = context.watch<CounterCubit>().state;
+                  final internetState = context.watch<InternetCubit>().state;
+                  if (internetState is InternetConnectedState &&
+                      internetState.connectionType == ConnectionType.wifi) {
+                    return Text(
+                      'Counter: ${counterState.counterValue.toString()} Internet: Wifi',
+                    );
+                  } else if (internetState is InternetConnectedState &&
+                      internetState.connectionType == ConnectionType.mobile) {
+                    return Text(
+                      'Counter: ${counterState.counterValue.toString()} Internet: Mobile',
+                    );
+                  } else {
+                    return Text(
+                      'Counter: ${counterState.counterValue.toString()} Internet: Disconnected',
+                    );
+                  }
+                },
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
