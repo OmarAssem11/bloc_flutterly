@@ -21,10 +21,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext homeScreenContext) {
     final blocProvider = BlocProvider.of<CounterCubit>(context);
     return BlocConsumer<InternetCubit, InternetState>(
-      listener: (context, state) {
+      listener: (internetCubitListenerContext, state) {
         if (state is InternetConnectedState &&
             state.connectionType == ConnectionType.wifi) {
           blocProvider.increment();
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               BlocBuilder<InternetCubit, InternetState>(
-                builder: (context, state) {
+                builder: (internetCubitBuilderContext, state) {
                   if (state is InternetConnectedState &&
                       state.connectionType == ConnectionType.wifi) {
                     return const Text('Wifi');
@@ -98,16 +98,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(height: 24),
-              MaterialButton(
-                color: Colors.redAccent,
-                onPressed: () =>
-                    Navigator.of(context).pushNamed(SecondScreen.routeName),
-                child: const Text('Go to second screen'),
+              Builder(
+                builder: (materialButtonContext) => MaterialButton(
+                  color: Colors.redAccent,
+                  onPressed: () => Navigator.of(materialButtonContext)
+                      .pushNamed(SecondScreen.routeName),
+                  child: const Text('Go to second screen'),
+                ),
               ),
               MaterialButton(
                 color: Colors.greenAccent,
-                onPressed: () =>
-                    Navigator.of(context).pushNamed(SecondScreen.routeName),
+                onPressed: () => Navigator.of(homeScreenContext)
+                    .pushNamed(SecondScreen.routeName),
                 child: const Text('Go to second screen'),
               ),
             ],
